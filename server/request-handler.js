@@ -40,7 +40,7 @@ var requestHandler = function(request, response) {
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
 
-  if(request.url.match('./*')){
+  if(request.url.match('/classes/*')){
     if(request.method === 'GET'){
       response.end(JSON.stringify({'results':results}));
     }
