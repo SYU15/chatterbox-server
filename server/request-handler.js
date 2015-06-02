@@ -37,27 +37,31 @@ var requestHandler = function(request, response) {
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
 
-  if(request.method === 'GET'){
-    response.end(JSON.stringify({'results':results}));
-  }
+  if(request.url.match('./*')){
+    if(request.method === 'GET'){
+      response.end(JSON.stringify({'results':results}));
+    }
 
-  if(request.method === 'POST' && request.url.match("./*")){
-    var requestBody ='';
+    if(request.method === 'POST'){
+      var requestBody ='';
 
-    request.on('data', function(data){
-      // console.log(data);
-      requestBody += data;
-    });
+      request.on('data', function(data){
+        requestBody += data;
+      });
 
-    request.on('end', function(){
-      results.push(JSON.parse(requestBody));
-      statusCode = 201;
+      request.on('end', function(){
+        results.push(JSON.parse(requestBody));
+        statusCode = 201;
 
-      headers['Content-Type'] = "text/plain";
-      response.writeHead(statusCode, headers);
-      response.end("Hello, world");
-    });
-
+        headers['Content-Type'] = "text/plain";
+        response.writeHead(statusCode, headers);
+        response.end("Hello, world");
+      });
+    }
+ }else {
+    statusCode = 404;
+    response.writeHead(statusCode, headers);
+    response.end("Hello, world");
   }
 
 
