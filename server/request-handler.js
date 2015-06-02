@@ -12,8 +12,8 @@ this file and include it in basic-server.js so that it actually works.
 
 **************************************************************/
 var results = [];
-
-var requestHandler = function(request, response) {
+//var static = require("node-static");
+var requestHandler = function(request, response, html) {
   // Request and Response come from node's http module.
   //
   // They include information about both the incoming request, such as
@@ -30,10 +30,17 @@ var requestHandler = function(request, response) {
   // console.logs in your code.
   console.log("Serving request type " + request.method + " for url " + request.url);
 
+  // var file = new static.Server('./classes/client/index.html');
+
+  // request.addListener('end', function () {
+  //      console.log('being served');
+  //      file.serve(request, response);
+  //  }).resume();
 
   // The outgoing status.
-  var statusCode = 200;
 
+
+  var statusCode = 200;
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
 
