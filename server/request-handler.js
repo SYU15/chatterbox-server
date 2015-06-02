@@ -36,12 +36,10 @@ var requestHandler = function(request, response) {
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
   var results =[];
-  headers['Content-Type'] = "text/plain";
-  response.writeHead(statusCode, headers);
+
 
   if(request.method === 'GET'){
     response.end(JSON.stringify({'results':results}));
-    response.end("Hello, world");
   }
 
   if(request.method === 'POST' && request.url.match(".*")){
@@ -55,33 +53,23 @@ var requestHandler = function(request, response) {
     request.on('end', function(){
       results.push(requestBody);
       statusCode = 201;
+
+      headers['Content-Type'] = "text/plain";
       response.writeHead(statusCode, headers);
       response.end("Hello, world");
     });
-  // request(request.url)
-  //       .on('data', function(data){
-  //            // console.log(data);
-  //       })
-  //       .on('end', function(){
-  //           // console.log(data);
-  //       });
-    // console.log(request.postData);
-    // results.push(request._postData);
+
   }
-
-
 
   // Tell the client we are sending them plain text.
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  // headers['Content-Type'] = "text/plain";
+  headers['Content-Type'] = "text/plain";
 
   // // .writeHead() writes to the request line and headers of the response,
   // // which includes the status and all headers.
-  // response.writeHead(statusCode, headers);
-
-
+  response.writeHead(statusCode, headers);
 
   // Make sure to always call response.end() - Node may not send
   // anything back to the client until you do. The string you pass to
