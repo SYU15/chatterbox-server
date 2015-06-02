@@ -15,6 +15,9 @@ $(document).ready(function(){
       url:'http://127.0.0.1:3000/classes/',
       context: document.body
     }).done(function(data){
+      data = JSON.parse(data);
+      console.log(data);
+      console.log(JSON.stringify(data));
       for(var i = 0; i < data.results.length; i++) {
         if(data.results[i].text && data.results[i].username && new Date(data.results[i].createdAt) > new Date(requestTime)
           && data.results[i].roomname) {
@@ -30,7 +33,11 @@ $(document).ready(function(){
           }
         }
       }
-      requestTime = data.results[0].createdAt;
+
+      if(data.results[0]) {
+        requestTime = data.results[0].createdAt;
+      }
+
       updateFriends();
     });
   };

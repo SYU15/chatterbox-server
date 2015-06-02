@@ -59,7 +59,9 @@ var requestHandler = function(request, response) {
       });
 
       request.on('end', function(){
-        results.push(JSON.parse(requestBody));
+        var object = JSON.parse(requestBody);
+        object['createdAt'] = new Date();
+        results.push(object);
         statusCode = 201;
 
         headers['Content-Type'] = "text/plain";
