@@ -12,7 +12,7 @@ $(document).ready(function(){
   };
   var data = function(){
     $.ajax({
-      url:'http://127.0.0.1:3000/',
+      url:'http://127.0.0.1:3000/classes/',
       context: document.body
     }).done(function(data){
       for(var i = 0; i < data.results.length; i++) {
@@ -50,7 +50,7 @@ $(document).ready(function(){
       'roomname': roomAssignment
     };
     $.ajax({
-      url: 'http://127.0.0.1:3000/',
+      url: 'http://127.0.0.1:3000/classes/',
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',

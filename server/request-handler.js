@@ -11,10 +11,7 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-var results = [{
-        username: 'Jono',
-        message: 'Do my bidding!'}
-        ];
+var results = [];
 
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
@@ -41,14 +38,18 @@ var requestHandler = function(request, response) {
   var headers = defaultCorsHeaders;
 
   if(request.url.match('/classes/*')){
+
+    if (request.method === "OPTIONS") {
+      // Add headers to response and send
+      response.writeHead(statusCode, headers);
+      response.end();
+    }
+
     if(request.method === 'GET'){
+      response.writeHead(200, headers);
       response.end(JSON.stringify({'results':results}));
     }
 
-    if(request.method === 'OPTIONS') {
-      // response.writeHead(200, headers);
-      // response.end();
-    }
 
     if(request.method === 'POST'){
       var requestBody ='';
@@ -61,13 +62,13 @@ var requestHandler = function(request, response) {
         results.push(JSON.parse(requestBody));
         statusCode = 201;
 
-        headers['Content-Type'] = "JSON";
+        headers['Content-Type'] = "text/plain";
         response.writeHead(statusCode, headers);
         response.end("Hello, world");
       });
     }
   }else {
-    response.writeHead(404, 'Resource Not Found', {'Content-Type': 'JSON'});
+    response.writeHead(404, 'Resource Not Found', {'Content-Type': 'text/plain'});
     response.end('<!doctype html><html><head><title>404</title></head><body>404: Resource Not Found</body></html>');
   }
 
@@ -76,7 +77,7 @@ var requestHandler = function(request, response) {
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  headers['Content-Type'] = "JSON";
+  headers['Content-Type'] = "text/plain";
 
   // // .writeHead() writes to the request line and headers of the response,
   // // which includes the status and all headers.
