@@ -1,5 +1,8 @@
 /* Import node's http module: */
 var http = require("http");
+var handleRequest = require('./request-handler.js');
+// var request = require('request');
+
 
 
 // Every server needs to listen on a port with a unique number. The
@@ -22,9 +25,15 @@ var ip = "127.0.0.1";
 // incoming requests.
 //
 // After creating the server, we will tell it to listen on the given port and IP. */
-var server = http.createServer(handleRequest);
+var server = http.createServer(handleRequest.requestHandler);
 console.log("Listening on http://" + ip + ":" + port);
 server.listen(port, ip);
+
+// response.on('data', function (chunk) {
+//     console.log(chunk);
+//   });
+
+
 
 // To start this server, run:
 //
@@ -39,3 +48,19 @@ server.listen(port, ip);
 // possibility of serving more requests. To stop your server, hit
 // Ctrl-C on the command line.
 
+
+// request('http://127.0.0.1:3000/clients/messages', function (error, response, body) {
+//     //Check for error
+//     if(error){
+//         return console.log('Error:', error);
+//     }
+
+//     //Check for right status code
+//     if(response.statusCode !== 200){
+//         return console.log('Invalid Status Code Returned:', response.statusCode);
+//     }
+
+//     //All is good. Print the body
+//     console.log(body); // Show the HTML for the Modulus homepage.
+
+// });

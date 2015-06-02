@@ -28,12 +28,24 @@ var requestHandler = function(request, response) {
   // debugging help, but you should always be careful about leaving stray
   // console.logs in your code.
   console.log("Serving request type " + request.method + " for url " + request.url);
+  console.log(request.headers);
 
   // The outgoing status.
   var statusCode = 200;
 
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
+  var results =[];
+
+  if(request.method === 'GET'){
+    response.end(JSON.stringify({'results':results}));
+  }
+
+  if(request.method === 'POST'){
+    results.push(request.json);
+  }
+
+
 
   // Tell the client we are sending them plain text.
   //
@@ -45,6 +57,15 @@ var requestHandler = function(request, response) {
   // which includes the status and all headers.
   response.writeHead(statusCode, headers);
 
+  // request(request.url)
+  //       .on('data', function(data){
+  //            // console.log(data);
+  //       })
+  //       .on('end', function(){
+  //           // console.log(data);
+  //       });
+
+
   // Make sure to always call response.end() - Node may not send
   // anything back to the client until you do. The string you pass to
   // response.end() will be the body of the response - i.e. what shows
@@ -52,7 +73,7 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end("Hello, World!");
+  response.end("Hello, world");
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
@@ -71,3 +92,4 @@ var defaultCorsHeaders = {
   "access-control-max-age": 10 // Seconds.
 };
 
+exports.requestHandler = requestHandler;

@@ -12,7 +12,7 @@ $(document).ready(function(){
   };
   var data = function(){
     $.ajax({
-      url:'https://api.parse.com/1/classes/chatterbox',
+      url:'http://127.0.0.1:3000/clients/messages',
       context: document.body
     }).done(function(data){
       for(var i = 0; i < data.results.length; i++) {
@@ -50,7 +50,7 @@ $(document).ready(function(){
       'roomname': roomAssignment
     };
     $.ajax({
-      url: 'https://api.parse.com/1/classes/chatterbox',
+      url: 'http://127.0.0.1:3000/clients/messages',
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
