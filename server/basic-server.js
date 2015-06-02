@@ -1,7 +1,8 @@
 /* Import node's http module: */
 var http = require("http");
 var handleRequest = require('./request-handler.js');
-
+var fs = require('fs');
+var static = require( 'node-static' );
 // var request = require('request');
 
 
@@ -29,11 +30,14 @@ var server = http.createServer(handleRequest.requestHandler);
 console.log("Listening on http://" + ip + ":" + port);
 server.listen(port, ip);
 
-// response.on('data', function (chunk) {
-//     console.log(chunk);
-//   });
+//server to host chat app
+var file = new static.Server( './classes/client');
 
-
+http.createServer(function(request, response) {
+  request.addListener( 'end', function () {
+          file.serve( request, response );
+      } ).resume();
+}).listen(8000, ip);
 
 // To start this server, run:
 //
@@ -49,18 +53,3 @@ server.listen(port, ip);
 // Ctrl-C on the command line.
 
 
-// request('http://127.0.0.1:3000/clients/messages', function (error, response, body) {
-//     //Check for error
-//     if(error){
-//         return console.log('Error:', error);
-//     }
-
-//     //Check for right status code
-//     if(response.statusCode !== 200){
-//         return console.log('Invalid Status Code Returned:', response.statusCode);
-//     }
-
-//     //All is good. Print the body
-//     console.log(body); // Show the HTML for the Modulus homepage.
-
-// });
