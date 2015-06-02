@@ -11,7 +11,10 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-var results = [];
+var results = [{
+        username: 'Jono',
+        message: 'Do my bidding!'}
+        ];
 
 var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
@@ -42,6 +45,11 @@ var requestHandler = function(request, response) {
       response.end(JSON.stringify({'results':results}));
     }
 
+    if(request.method === 'OPTIONS') {
+      // response.writeHead(200, headers);
+      // response.end();
+    }
+
     if(request.method === 'POST'){
       var requestBody ='';
 
@@ -53,15 +61,14 @@ var requestHandler = function(request, response) {
         results.push(JSON.parse(requestBody));
         statusCode = 201;
 
-        headers['Content-Type'] = "text/plain";
+        headers['Content-Type'] = "JSON";
         response.writeHead(statusCode, headers);
         response.end("Hello, world");
       });
     }
- }else {
-    statusCode = 404;
-    response.writeHead(statusCode, headers);
-    response.end("Hello, world");
+  }else {
+    response.writeHead(404, 'Resource Not Found', {'Content-Type': 'JSON'});
+    response.end('<!doctype html><html><head><title>404</title></head><body>404: Resource Not Found</body></html>');
   }
 
 
@@ -69,7 +76,7 @@ var requestHandler = function(request, response) {
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  //headers['Content-Type'] = "text/plain";
+  headers['Content-Type'] = "JSON";
 
   // // .writeHead() writes to the request line and headers of the response,
   // // which includes the status and all headers.
